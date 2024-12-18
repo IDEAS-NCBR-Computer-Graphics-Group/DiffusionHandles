@@ -109,7 +109,7 @@ def test_diffusion_handles(
             output_dir=output_dir,
             img_res=img_res,
         )
-
+        # 9.
         # compute or load input image identity
         input_image_identity_path = join(
             tempfile.gettempdir(),
@@ -137,6 +137,7 @@ def test_diffusion_handles(
                 device=device
             )
         else:
+            # 9.
             # invert the input image to get initial noise and null text
             # that can be used to reconstruct the input image with the diffusion model
             null_text_emb, init_noise = diff_handles.invert_input_image(
@@ -167,11 +168,12 @@ def test_diffusion_handles(
                 }
                 np.savez(input_image_identity_path, **input_image_identity)
 
+        # 10.0
         # set the foreground object to get an updated background depth
         bg_depth = diff_handles.set_foreground(
             depth=depth, fg_mask=fg_mask, bg_depth=bg_depth
         )
-
+        # 11.0
         # save image reconstructed from inversion
         with torch.no_grad():
             latent_image = 1 / 0.18215 * latent_image.detach()
@@ -216,7 +218,8 @@ def test_diffusion_handles(
                 else None
             )
 
-            # transform the foreground object
+            # 13. transform the foreground object
+            # DPCP
             results = diff_handles.transform_foreground(
                 depth=depth,
                 prompt=prompt,
@@ -285,6 +288,7 @@ def preprocess_samples(input_dir, dataset_names):
         print(
             f"Estimating background images for {len(foreground_removal_samples)} samples ..."
         )
+        # DPCP
         remove_foreground(
             input_image_paths=[
                 join(input_dir, sample_name, "input.png")
@@ -305,6 +309,8 @@ def preprocess_samples(input_dir, dataset_names):
         print(
             f"Estimating depth and background depth for {len(depth_estimation_samples)} samples ..."
         )
+
+        # DPCP
         estimate_depth(
             input_image_paths=[
                 join(input_dir, sample_name, "input.png")
@@ -325,6 +331,7 @@ def preprocess_samples(input_dir, dataset_names):
         )
 
 
+# DPCP :
 def load_diffhandles_inputs(
     input_dir, sample_name, output_dir, img_res, device, skip_existing
 ):
