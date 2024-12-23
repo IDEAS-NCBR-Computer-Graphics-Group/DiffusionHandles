@@ -176,6 +176,7 @@ class GuidedStableDiffuser(GuidedDiffuser):
             [[f, 0, cx], [0, f, cy], [0, 0, 1]], dtype=torch.float32, device=device
         )
 
+    # DPCP Activations
     def initial_inference(
         self,
         init_latents: torch.Tensor,

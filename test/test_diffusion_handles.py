@@ -62,22 +62,23 @@ def test_diffusion_handles(
         OmegaConf.save(config=diff_handles.conf, f=f)
 
     # generate a webpage for the results
-    generate_results_webpage(
-        test_set_path=args.test_set_path,
-        website_path=join(
-            args.output_dir, f"{splitext(basename(args.test_set_path))[0]}_summary.html"
-        ),
-        relative_image_dir=".",
-        show_denoising_steps=diff_handles.diffuser.conf.save_denoising_steps,
-        num_timesteps=diff_handles.diffuser.conf.num_timesteps,
-        num_optsteps=diff_handles.diffuser.conf.num_optsteps,
-    )
+    # generate_results_webpage(
+    #     test_set_path=args.test_set_path,
+    #     website_path=join(
+    #         args.output_dir, f"{splitext(basename(args.test_set_path))[0]}_summary.html"
+    #     ),
+    #     relative_image_dir=".",
+    #     show_denoising_steps=diff_handles.diffuser.conf.save_denoising_steps,
+    #     num_timesteps=diff_handles.diffuser.conf.num_timesteps,
+    #     num_optsteps=diff_handles.diffuser.conf.num_optsteps,
+    # )
 
     # iterate over test set samples
     print(f"Editing {len(dataset_names)} images ...")
     for sample_idx, (sample_name, transform_names) in enumerate(dataset_names.items()):
 
-        # load inputs for the sample
+        # 7.
+        # DPCP load inputs for the sample
         transforms, prompt, img, fg_mask, depth, bg_depth, transform_exists = (
             load_diffhandles_inputs(
                 input_dir=input_dir,
@@ -96,6 +97,7 @@ def test_diffusion_handles(
             f"[{sample_idx+1}/{len(dataset_names)}] Editing image {sample_name} with {len(transforms)} transforms ..."
         )
 
+        # 8.
         # save inputs for visualization to results directory
         save_diffhandles_inputs(
             transforms=transforms,
